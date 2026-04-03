@@ -4,23 +4,184 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Life in Weeks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="container" id="app">
+  <div class="grain"></div>
 
-    <h1 class="title">Life in Weeks</h1>
+  <!-- ══════════════════ LANDING SCREEN ══════════════════ -->
+  <div class="screen" id="screen-landing">
+    <div class="landing-inner">
+      <div class="eyebrow">MEMENTO MORI</div>
+      <h1 class="hero-title">Life<br><em>in Weeks</em></h1>
+      <p class="hero-sub">4,680 boxes. One life.<br>How many have you filled?</p>
 
-    <p class="subtitle">See your life, one week at a time</p>
+      <div class="dob-picker">
+        <div class="picker-label">DATE OF BIRTH</div>
+        <div class="picker-row">
+          <div class="select-wrap">
+            <select id="pick-day"><option value="">DD</option></select>
+          </div>
+          <div class="select-sep">/</div>
+          <div class="select-wrap">
+            <select id="pick-month">
+              <option value="">MM</option>
+              <option value="0">January</option><option value="1">February</option>
+              <option value="2">March</option><option value="3">April</option>
+              <option value="4">May</option><option value="5">June</option>
+              <option value="6">July</option><option value="7">August</option>
+              <option value="8">September</option><option value="9">October</option>
+              <option value="10">November</option><option value="11">December</option>
+            </select>
+          </div>
+          <div class="select-sep">/</div>
+          <div class="select-wrap">
+            <select id="pick-year"><option value="">YYYY</option></select>
+          </div>
+        </div>
+        <div id="dob-error" class="dob-error"></div>
+        <button id="startBtn" class="start-btn">
+          <span>REVEAL YOUR LIFE</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.2"/></svg>
+        </button>
+      </div>
 
-    <div class="input-group">
-      <input type="date" id="dob" required />
-      <button id="startBtn">Start</button>
+      <div class="landing-quote">"The trouble is, you think you have time."<br><span>— Buddha</span></div>
     </div>
-
   </div>
 
+  <!-- ══════════════════ GRID SCREEN ══════════════════ -->
+  <div class="screen hidden" id="screen-grid">
+
+    <header class="app-header">
+      <div class="header-left">
+        <div class="app-logo">LiW</div>
+      </div>
+      <div class="header-center">
+        <div class="header-name" id="header-name"></div>
+        <div class="header-sub">One box = one week of your life</div>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" id="snapBtn" title="Jump to now">⊕</button>
+        <button class="icon-btn" id="shareBtn" title="Share">⇪</button>
+        <button class="reset-btn" id="resetBtn">↩ Reset</button>
+      </div>
+    </header>
+
+    <!-- COUNTDOWN CLOCK -->
+    <div class="countdown-bar" id="countdown-bar">
+      <div class="countdown-label">TIME REMAINING (EST. AGE 90)</div>
+      <div class="countdown-digits">
+        <div class="cd-unit"><span id="cd-years">—</span><em>YRS</em></div>
+        <div class="cd-colon">:</div>
+        <div class="cd-unit"><span id="cd-days">—</span><em>DAYS</em></div>
+        <div class="cd-colon">:</div>
+        <div class="cd-unit"><span id="cd-hours">—</span><em>HRS</em></div>
+        <div class="cd-colon">:</div>
+        <div class="cd-unit"><span id="cd-mins">—</span><em>MIN</em></div>
+        <div class="cd-colon">:</div>
+        <div class="cd-unit"><span id="cd-secs">—</span><em>SEC</em></div>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-item">
+        <div class="stat-value" id="stat-weeks-lived">—</div>
+        <div class="stat-label">Weeks Lived</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-years-lived">—</div>
+        <div class="stat-label">Years</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-weeks-left">—</div>
+        <div class="stat-label">Weeks Remaining</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-pct">—</div>
+        <div class="stat-label">Life Used</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-days-lived">—</div>
+        <div class="stat-label">Days Lived</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <!-- LIFESPAN SLIDER -->
+    <div class="slider-bar">
+      <div class="slider-label-row">
+        <span class="slider-label">LIFE EXPECTANCY</span>
+        <span class="slider-value" id="slider-display">90 years</span>
+      </div>
+      <input type="range" id="lifespan-slider" min="60" max="110" value="90" step="1" />
+    </div>
+
+    <!-- GRID SECTION -->
+    <div class="grid-wrapper">
+      <div class="grid-layout">
+        <!-- Decade labels -->
+        <div class="decade-col" id="decade-col"></div>
+        <!-- Main grid area -->
+        <div class="grid-main">
+          <div class="phase-legend" id="phase-legend"></div>
+          <div class="grid" id="grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div class="footer-quote" id="footer-quote"></div>
+      <div class="footer-meta">
+        <span id="footer-next-bday"></span>
+      </div>
+    </footer>
+
+  </div><!-- /screen-grid -->
+
+  <!-- ══════════════════ REFLECTION PANEL ══════════════════ -->
+  <div class="panel-overlay" id="panel-overlay"></div>
+  <div class="reflection-panel" id="reflection-panel">
+    <button class="panel-close" id="panel-close">✕</button>
+    <div class="panel-eyebrow" id="panel-eyebrow">WEEK</div>
+    <div class="panel-week-num" id="panel-week-num">—</div>
+    <div class="panel-date-range" id="panel-date-range">—</div>
+    <div class="panel-divider"></div>
+    <div class="panel-row"><span class="panel-key">AGE</span><span class="panel-val" id="panel-age">—</span></div>
+    <div class="panel-row"><span class="panel-key">PHASE</span><span class="panel-val" id="panel-phase">—</span></div>
+    <div class="panel-row"><span class="panel-key">YEAR</span><span class="panel-val" id="panel-year">—</span></div>
+    <div class="panel-row"><span class="panel-key">STATUS</span><span class="panel-val" id="panel-status">—</span></div>
+    <div class="panel-divider"></div>
+    <div class="panel-message" id="panel-message"></div>
+  </div>
+
+  <!-- ══════════════════ SHARE MODAL ══════════════════ -->
+  <div class="modal-overlay hidden" id="share-overlay">
+    <div class="share-modal">
+      <button class="panel-close" id="share-close">✕</button>
+      <div class="share-title">SHARE YOUR STATS</div>
+      <div class="share-card" id="share-card"></div>
+      <button class="copy-btn" id="copy-btn">
+        <span id="copy-label">COPY TO CLIPBOARD</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TOOLTIP (desktop only) -->
   <div id="tooltip"></div>
 
   <script src="script.js"></script>
